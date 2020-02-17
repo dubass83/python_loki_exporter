@@ -2,5 +2,4 @@ uwsgi
 flask
 prometheus_client
 requests
-# atexit
 apscheduler

@@ -40,14 +40,8 @@ def loki_get(query, loki_host, metrics={}):
             )
         pr_metrics[query["name"]].set(float(resp_data["data"]["result"][0]["value"][1]))
 
-# c = Counter('my_requests_total', 'HTTP Failures', ['method', 'endpoint'])
-# c.labels(method='get', endpoint='/').inc()
-# c.labels(method='post', endpoint='/submit').inc()
 
 def create_metrics(file_options):
     for query in file_options["queris"]:
         loki_get(query, file_options["loki_host"], file_options["metrics"])
 
-
-if __name__ == '__main__':
-    pass

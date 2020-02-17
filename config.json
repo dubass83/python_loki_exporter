@@ -1,5 +1,6 @@
 {
 "loki_host": "http://localhost:3100",
+"server_port": 8779,
 "timeout": 10,
 "metrics":{
   "labels": true,

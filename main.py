@@ -99,7 +99,7 @@ def run(file_options=options):
 app = Flask(__name__)
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=run, trigger="interval", seconds=10)
+scheduler.add_job(func=run, trigger="interval", seconds=options.get("timeout", 10))
 scheduler.start()
 
 # Shut down the scheduler when exiting the app
@@ -112,7 +112,7 @@ app_dispatch = DispatcherMiddleware(app, {
 
 
 if __name__ == '__main__':
-    run_simple(hostname="localhost", port=5000, application=app_dispatch)
+    run_simple(hostname="localhost", port=options.get("server_port", 8080), application=app_dispatch)
 
 
         
