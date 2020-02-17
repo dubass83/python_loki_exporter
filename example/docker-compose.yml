@@ -9,7 +9,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - /home/sych/Work/loki_exporter/example:/etc/loki
+      - ./config:/etc/loki
     command:
       -config.file=/etc/loki/loki.yml
     networks:
@@ -18,7 +18,7 @@ services:
   promtail:
     image: grafana/promtail:master
     volumes:
-      - /home/sych/Work/loki_exporter/example:/etc/promtail
+      - ./config:/etc/promtail
       - /var/log:/var/log
     command:
       -config.file=/etc/promtail/promtail.yml
@@ -39,19 +39,23 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/sych/Work/loki_exporter/example:/etc/prometheus
+      - ./config:/etc/prometheus
     command:
       --config.file=/etc/prometheus/prometheus.yml
     networks:
       - loki
 
-#   loki_exporter:
-#     image: ricoberger/loki_exporter
-#     ports:
-#       - "9524:9524"
-#     volumes:
-#       - $PWD:/etc/loki_exporter
-#     command:
-#       -config.file=/etc/loki_exporter/loki_exporter.yml
-#     networks:
-#       - loki
+  python_loki_exporter:
+    build:
+      context: ../
+    ports:
+      - "8779:8779"
+    volumes:
+      - ./config:/etc/loki_exporter
+    command:
+      python3
+      main.py
+      -f
+      /etc/loki_exporter/exporter_config.json
+    networks:
+      - loki

@@ -112,7 +112,7 @@ app_dispatch = DispatcherMiddleware(app, {
 
 
 if __name__ == '__main__':
-    run_simple(hostname="localhost", port=options.get("server_port", 8080), application=app_dispatch)
+    run_simple(hostname="0.0.0.0", port=options.get("server_port", 8080), application=app_dispatch)
 
 
         
