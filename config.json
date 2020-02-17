@@ -1,0 +1,20 @@
+{
+"loki_host": "http://localhost:3100",
+"timeout": 10,
+"metrics":{
+  "labels": true,
+  "label_values": true,
+  "queries": true
+},
+"queris": [
+    {
+        "q": "count_over_time({filename=\"/var/log/auth.log\"} |=\"CRON\"[5m])",
+        "name": "loki_metric_cron_5m",
+        "description": "Count of cron name in logs for 5 minutes"
+    },
+    {
+        "q": "count_over_time({filename=\"/var/log/auth.log\"} |=\"CRON\"[15m])",
+        "name": "loki_metric_cron_15m"
+    }
+]
+}
