@@ -1,6 +1,6 @@
 FROM alpine:3.7
 LABEL maintainer="Maks Sych <makssych@gmail.com>"
-
+EXPOSE 8779
 WORKDIR /usr/src/app
 RUN apk add --no-cache \
         uwsgi-python3 \

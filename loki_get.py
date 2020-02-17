@@ -32,7 +32,7 @@ def loki_get(query, loki_host, metrics={}):
         try:
             g = pr_metrics[query["name"]]
         except(KeyError):
-            pr_metrics[query["name"]] = Gauge(query["name"], query.get("descrition", 'No description of gauge'))
+            pr_metrics[query["name"]] = Gauge(query["name"], query.get("description", 'No description of gauge'))
             g = pr_metrics[query["name"]]
         # Set to a given value
         logger.info("Set Gauge for metric name {}: {}".format(
