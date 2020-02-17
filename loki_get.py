@@ -30,15 +30,16 @@ def loki_get(query, loki_host, metrics={}):
         resp_data = resp.json()
         logger.debug(resp_data["data"]["result"])
         try:
-            print(pr_metrics[query["name"]])
+            g = pr_metrics[query["name"]]
         except(KeyError):
             pr_metrics[query["name"]] = Gauge(query["name"], query.get("descrition", 'No description of gauge'))
+            g = pr_metrics[query["name"]]
         # Set to a given value
         logger.info("Set Gauge for metric name {}: {}".format(
             query["name"],
             resp_data["data"]["result"][0]["value"][1])
             )
-        pr_metrics[query["name"]].set(float(resp_data["data"]["result"][0]["value"][1]))
+        g.set(float(resp_data["data"]["result"][0]["value"][1]))
 
 
 def create_metrics(file_options):
