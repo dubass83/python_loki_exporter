@@ -2,8 +2,8 @@
 Export metrics from loki to prometheus
 
 ## usage:
-docker build -t app .
-docker run -it app python3 main.py -f config.json
+$ docker build -t app .  
+$ docker run -it app python3 main.py -f config.json  
 
 ```json config.json
 {
