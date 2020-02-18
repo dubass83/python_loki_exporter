@@ -1,0 +1,27 @@
+name: Create docker container on release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get the version
+      id: vars
+      run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+    - name: Create Docker container
+      run: |
+        # Step 1: Authenticate
+        docker login docker.pkg.github.com -u dubass83 -p ${{ secrets.GITHUB_TOKEN }}
+        # Step 2: Build and Tag
+        docker build -t docker.pkg.github.com/dubass83/python_loki_exporter/app:${{steps.vars.outputs.tag}} .
+    - name: Publish Docker container
+      run: |
+        # Step 3: Publish
+        docker push docker.pkg.github.com/dubass83/python_loki_exporter/app:${{steps.vars.outputs.tag}}
+
