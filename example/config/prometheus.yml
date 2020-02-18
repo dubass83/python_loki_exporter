@@ -9,4 +9,4 @@ scrape_configs:
     metrics_path: /metrics
     static_configs:
       - targets:
-        - loki_exporter:9524
+        - python_loki_exporter:8779
