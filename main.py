@@ -11,7 +11,6 @@ import argparse
 import sys
 import json
 import atexit
-from datetime import datetime, date, timedelta
 from loki_get import create_metrics
 from flask import Flask
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
@@ -19,9 +18,11 @@ from werkzeug.serving import run_simple
 from prometheus_client import make_wsgi_app
 from apscheduler.schedulers.background import BackgroundScheduler
 
+
 class CustomFormatter(argparse.RawDescriptionHelpFormatter,
                       argparse.ArgumentDefaultsHelpFormatter,):
     pass
+
 
 parser = argparse.ArgumentParser(description=sys.modules[__name__].__doc__,
                                  formatter_class=CustomFormatter,)
@@ -37,7 +38,7 @@ def setup_logging(options):
         ch = logging.StreamHandler()
         ch.setFormatter(
             logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             ),
         )
         root.addHandler(ch)
@@ -67,9 +68,10 @@ def parse_args(args=sys.argv[1:]):
 
     return parser.parse_args(args)
 
+
 def get_options():
     """ main entrance """
-    # try get options 
+    # try get options
     try:
         options = parse_args()
         setup_logging(options)
@@ -87,7 +89,9 @@ def get_options():
         sys.exit(0)
     return file_options
 
+
 options = get_options()
+
 
 def run(file_options=options):
     logger.info("#============  Started ==============#")
@@ -95,11 +99,14 @@ def run(file_options=options):
     create_metrics(file_options)
     logger.info("#============  Finshed ==============#")
 
+
 # Create my app
 app = Flask(__name__)
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=run, trigger="interval", seconds=options.get("timeout", 10))
+scheduler.add_job(func=run,
+                  trigger="interval",
+                  seconds=options.get("timeout", 10))
 scheduler.start()
 
 # Shut down the scheduler when exiting the app
@@ -112,7 +119,6 @@ app_dispatch = DispatcherMiddleware(app, {
 
 
 if __name__ == '__main__':
-    run_simple(hostname="0.0.0.0", port=options.get("server_port", 8779), application=app_dispatch)
-
-
-        
+    run_simple(hostname="0.0.0.0",
+               port=options.get("server_port", 8779),
+               application=app_dispatch)

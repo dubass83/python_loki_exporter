@@ -16,14 +16,15 @@ logger = logging.getLogger(os.path.splitext(os.path.basename(sys.argv[0]))[0])
 
 pr_metrics = {}
 
+
 def loki_get(query, loki_host, metrics={}):
     logger.debug("query={}".format(query["q"]))
 
     url = '{}/loki/api/v1/query'.format(loki_host)
     params = {
-    "query": "{}".format(query["q"])
+              "query": "{}".format(query["q"])
     }
-    
+
     resp = requests.get(url, params=params)
     logger.debug("request status code: {}".format(resp.status_code))
     if resp.status_code == 200 and resp.json()["data"]["result"] != []:
@@ -32,7 +33,9 @@ def loki_get(query, loki_host, metrics={}):
         try:
             g = pr_metrics[query["name"]]
         except(KeyError):
-            pr_metrics[query["name"]] = Gauge(query["name"], query.get("description", 'No description of gauge'))
+            pr_metrics[query["name"]] = Gauge(query["name"],
+                                              query.get("description",
+                                              'No description of gauge'))
             g = pr_metrics[query["name"]]
         # Set to a given value
         logger.info("Set Gauge for metric name {}: {}".format(
@@ -45,4 +48,3 @@ def loki_get(query, loki_host, metrics={}):
 def create_metrics(file_options):
     for query in file_options["queris"]:
         loki_get(query, file_options["loki_host"], file_options["metrics"])
-

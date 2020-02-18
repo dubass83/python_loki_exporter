@@ -1,4 +1,5 @@
 example
+tests
 Dockerfile
 __pycache__
 .venv
