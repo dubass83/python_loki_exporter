@@ -24,7 +24,6 @@ def loki_get(query, loki_host, metrics={}):
     params = {
               "query": "{}".format(query["q"])
     }
-
     resp = requests.get(url, params=params)
     logger.debug("request status code: {}".format(resp.status_code))
     if resp.status_code == 200 and resp.json()["data"]["result"] != []:
@@ -33,9 +32,11 @@ def loki_get(query, loki_host, metrics={}):
         try:
             g = pr_metrics[query["name"]]
         except(KeyError):
-            pr_metrics[query["name"]] = Gauge(query["name"],
-                                              query.get("description",
-                                              'No description of gauge'))
+            pr_metrics[query["name"]] = Gauge(
+                query["name"],
+                query.get("description",
+                          'No description of gauge')
+            )
             g = pr_metrics[query["name"]]
         # Set to a given value
         logger.info("Set Gauge for metric name {}: {}".format(
